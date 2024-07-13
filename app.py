@@ -4,11 +4,13 @@ import requests
 
 from sensor import Sensor
 from config import setup_logging
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 api = Api(app)
 
-# Setup logging
+load_dotenv()
 logger = setup_logging()
 
 
@@ -23,7 +25,7 @@ class SensorData(Resource):
 
     def send_post_request(self, data):
         """Send POST request with sensor data to another API."""
-        url = "http://127.0.0.1:5000/sensor-data"  # Replace with API endpoint
+        url = os.getenv("API_URL")
         headers = {"Content-Type": "application/json"}
         try:
             response = requests.post(url, json=data, headers=headers)
