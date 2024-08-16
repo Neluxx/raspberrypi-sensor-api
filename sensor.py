@@ -11,7 +11,7 @@ class Sensor:
 
             return mh_z19.read_all()
         except ImportError:
-            # Mock Daten für den Fall, dass mh_z19 nicht verfügbar ist
+            # Mock data for testing purposes if mh_z19 is not available
             return {"co2": 450}
 
     def _get_bme680_instance(self):
@@ -26,7 +26,7 @@ class Sensor:
 
             return bme
         except ImportError:
-            # Mock-Instanz für den Fall, dass bme680 nicht verfügbar ist
+            # Mock data for testing purposes if bme680 is not available
             class MockBME680:
                 def __init__(self):
                     self.data = type(
