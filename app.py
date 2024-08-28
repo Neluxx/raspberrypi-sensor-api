@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, make_response
 from flask_restful import Resource, Api
 import requests
 
@@ -39,16 +39,6 @@ class SensorData(Resource):
             return make_response(
                 jsonify({"message": f"Error sending POST request: {req_err}"}), 500
             )
-
-    # POST method only for testing purposes
-    def post(self):
-        """Handle POST request to receive and process sensor data."""
-        if not request.is_json:
-            return {"message": "Request must be JSON"}, 400
-
-        data = request.get_json()
-        print(f"Received data: {data}")
-        return make_response(jsonify({"received": data}), 201)
 
 
 api.add_resource(SensorData, "/sensor-data")
