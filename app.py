@@ -3,7 +3,6 @@ from flask_restful import Resource, Api
 import requests
 
 from sensor import Sensor
-from config import setup_logging
 from dotenv import load_dotenv
 import os
 
@@ -11,7 +10,6 @@ app = Flask(__name__)
 api = Api(app)
 
 load_dotenv()
-logger = setup_logging()
 
 
 class SensorData(Resource):
@@ -19,7 +17,6 @@ class SensorData(Resource):
         """Handle GET request to retrieve sensor data and send it to another API."""
         sensor = Sensor()
         data = sensor.get_data()
-        logger.info(f"Received sensor data: {data}")
         response = self.send_post_request(data)
         return response
 
@@ -34,13 +31,11 @@ class SensorData(Resource):
                 jsonify({"message": "Data sent successfully"}), response.status_code
             )
         except requests.exceptions.HTTPError as http_err:
-            logger.error(f"HTTP error occurred: {http_err}")
             return make_response(
                 jsonify({"message": f"HTTP error occurred: {http_err}"}),
                 response.status_code,
             )
         except requests.exceptions.RequestException as req_err:
-            logger.error(f"Error sending POST request: {req_err}")
             return make_response(
                 jsonify({"message": f"Error sending POST request: {req_err}"}), 500
             )
